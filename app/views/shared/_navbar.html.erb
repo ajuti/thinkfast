@@ -1,0 +1,13 @@
+<nav class="navbar bg-body-tertiary">
+  <form class="container-fluid justify-content-start">
+    <button class="btn btn-outline-success me-2" type="button">
+      <%= link_to "Root", root_path, class: "root-link", style: "text-decoration: none; color: green;"%>
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" type="button" style="margin-right: 5px;">
+      <%= link_to "Play", play_path, class: "play-link", style: "text-decoration: none; color: blue;"%>
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" type="button">
+      <%= link_to "About", about_path, class: "about-link", style: "text-decoration: none; color: gray;"%>
+    </button>
+  </form>
+</nav>
