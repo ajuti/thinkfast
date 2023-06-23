@@ -1,0 +1,2 @@
+class FiveCost < ApplicationRecord
+end

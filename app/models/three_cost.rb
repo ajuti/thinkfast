@@ -1,0 +1,2 @@
+class ThreeCost < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class FourCost < ApplicationRecord
+end
