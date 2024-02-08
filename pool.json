@@ -1,0 +1,9 @@
+{
+  "units": [
+    { "name": "ta", "pos": "POOL", "star": 1, "amount": 20},
+    { "name": "Dcolon", "pos": "POOL", "star": 1, "amount": 15},
+    { "name": "PogO", "pos": "POOL", "star": 1, "amount": 15},
+    { "name": "tuh", "pos": "POOL", "star": 1, "amount": 10},
+    { "name": "clueless", "pos": "POOL", "star": 1, "amount": 7}
+  ]
+}
