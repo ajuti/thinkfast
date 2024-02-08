@@ -1,5 +1,5 @@
-import { ImageListItem, ImageListItemBar } from "@mui/material"
-import { buyUnit, sellUnit } from "../reducers/unitReducer"
+import { ImageListItem } from "@mui/material"
+import { buyUnit, createUnit, sellUnit } from "../reducers/unitReducer"
 import { useDispatch, useSelector } from "react-redux"
 
 const Unit = ({ id }) => {
@@ -10,7 +10,7 @@ const Unit = ({ id }) => {
 
   let style = { border: 'solid black', widht: '140px', height: '140px', position: "relative" }
 
-  if (['COMBINED', 'BOARD'].includes(pos)) {
+  if (["BOARD"].includes(pos)) {
     style = { ...style, width: '64px', height: '64px' }
   }
 
@@ -23,6 +23,7 @@ const Unit = ({ id }) => {
       }
       case "BOARD": {
         dispatch(sellUnit({ name, id, pos, star }))
+        dispatch(createUnit(name, star))
         break
       }
     }
@@ -34,6 +35,8 @@ const Unit = ({ id }) => {
         alt={name} 
         onClick={handleClick} /> 
       {star === 2 && <img src={`${baseUrl}/silver.webp`}
+       style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
+      {star === 3 && <img src={`${baseUrl}/gold.webp`}
        style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
     </ImageListItem>
   )

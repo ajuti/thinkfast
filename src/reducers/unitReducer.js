@@ -15,7 +15,6 @@ const unitSlice = createSlice({
   initialState: [],
   reducers: {
     buyUnitRdcr(state, action) {
-      console.log(action.payload)
       const newUnit = { ...action.payload }
       if (newUnit.remove) {
         return state.filter(u => !newUnit.remove.includes(u.id)).concat([newUnit])
@@ -30,9 +29,9 @@ const unitSlice = createSlice({
         .map(unit => !action.payload.in.includes(unit.id) ? unit : { ...unit, pos: "SHOP" })
         .map(unit => !action.payload.out.includes(unit.id) ? unit : { ...unit, pos: "POOL"})
     },
-    initShopRdcr(state, action) {
+    initShopRdcr(state, action) { /** Also used to create units when 2 or 3 stars are sold */
       return state.concat([...action.payload])
-    }
+    },
   }
 })
 
@@ -47,28 +46,33 @@ export const buyUnit = (unit, allUnits) => {
     const newUnit = { ...unit }
     const sameUnits = allUnits.filter(u => u.name === unit.name && u.star === 1 && u.pos === "BOARD") 
     if (sameUnits.length === 2) {
+      const twoStars = allUnits.filter(u => u.name === unit.name && u.star === 2 && u.pos === "BOARD")
       incId()
-      newUnit.pos = "COMBINED"
+      newUnit.pos = "BOARD"
       newUnit.star = 2
       newUnit.id = maxId
       newUnit.remove = [...sameUnits.map(x => x.id), unit.id]
-      // implement combine
+      if (twoStars.length === 2) {
+        newUnit.star = 3
+        newUnit.remove = newUnit.remove.concat(...[twoStars.map(x => x.id)])
+      }
+      console.log(newUnit.remove)
     }
     dispatch(buyUnitRdcr({ ...newUnit })) 
-    console.log("bought: ", newUnit)
+    // console.log("bought: ", newUnit)
   }
 }
 
 export const sellUnit = (unit) => {
   return async(dispatch) => {
     console.log("sold: ", unit)
-    dispatch(sellUnitRdcr(unit)) 
+    dispatch(sellUnitRdcr(unit.id)) 
   }
 }
 
 export const refreshShop = (shop) => {
   return async(dispatch) => {
-    console.log("refreshed shop")
+    // console.log("refreshed shop")
     dispatch(refreshShopRdcr(shop))
   }
 }
@@ -77,6 +81,22 @@ export const initalizeShop = (array) => {
   return async(dispatch) => {
     console.log("shop initialized")
     dispatch(initShopRdcr(array))
+  }
+}
+
+export const createUnit = (name, star, cost) => {
+  return async(dispatch) => {
+    console.log("created units")
+    let amt = 1 
+    if (star === 2) { amt = 3}
+    if (star === 3) { amt = 9}
+
+    const arr = []
+    for (let i=0; i < amt; i++) {
+      incId()
+      arr.push({ name, id: maxId, pos: "POOL", star: 1 })
+    }
+    dispatch(initShopRdcr(arr))
   }
 }
 
