@@ -10,22 +10,22 @@ const Unit = ({ id }) => {
 
   let style = { border: 'solid black', widht: '140px', height: '140px', position: "relative" }
 
-  if (["BOARD"].includes(pos)) {
+  if (["BOARD", "BENCH"].includes(pos)) {
     style = { ...style, width: '64px', height: '64px' }
   }
 
   const handleClick = () => {
     switch (pos) {
-      case "SHOP": {
-        const newUnit = { name, id, pos: "BOARD", star: 1 }
+      case "SHOP":
+        const newUnit = { name, id, pos: "BENCH", star: 1 }
         dispatch(buyUnit(newUnit, units))
         break
-      }
-      case "BOARD": {
+
+      case "BOARD": 
+      case "BENCH":
         dispatch(sellUnit({ name, id, pos, star }))
         dispatch(createUnit(name, star))
         break
-      }
     }
   }
 

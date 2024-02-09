@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material"
 import { useSelector } from "react-redux"
-import Unit from "./Unit"
+import Bench from "./Bench"
 
 const Board = (props) => {
   const units = useSelector(state => state.units).filter(unit => unit.pos === "BOARD" || unit.pos === "COMBINED")
@@ -12,10 +12,11 @@ const Board = (props) => {
       backgroundColor: "green",
       position: "absolute",
       margin: "10px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "end",
     }}>
-    {units.map(unit => 
-      <Unit key={unit.id} id={unit.id} />
-    )}
+      <Bench />
     </Paper>
   )
 }
