@@ -41,10 +41,14 @@ export const incId = () => {
   maxId++
 }
 
-export const buyUnit = (unit, allUnits) => {
+export const buyUnit = (unit, allUnits, bench) => {
   return async(dispatch) => {
-    const newUnit = { ...unit }
     const sameUnits = allUnits.filter(u => u.name === unit.name && u.star === 1 && (u.pos === "BOARD" || u.pos === "BENCH")) 
+    if (bench.length === 9 && sameUnits.length !== 2) {
+      console.log("Bench is full")
+      return
+    }
+    const newUnit = { ...unit }
     if (sameUnits.length === 2) {
       const twoStars = allUnits.filter(u => u.name === unit.name && u.star === 2 && (u.pos === "BOARD" || u.pos === "BENCH"))
       incId()

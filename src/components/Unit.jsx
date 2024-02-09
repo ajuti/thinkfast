@@ -6,6 +6,7 @@ const Unit = ({ id }) => {
   const baseUrl = "/src/assets"
   const dispatch = useDispatch()
   const units = useSelector(state => state.units)
+  const bench = units.filter(unit => unit.pos === "BENCH")
   const { name, pos, star } = units.find(unit => unit.id === id)
 
   let style = { border: 'solid black', widht: '140px', height: '140px', position: "relative" }
@@ -18,7 +19,7 @@ const Unit = ({ id }) => {
     switch (pos) {
       case "SHOP":
         const newUnit = { name, id, pos: "BENCH", star: 1 }
-        dispatch(buyUnit(newUnit, units))
+        dispatch(buyUnit(newUnit, units, bench))
         break
 
       case "BOARD": 
