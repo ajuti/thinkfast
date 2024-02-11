@@ -1,14 +1,17 @@
 import Homepage from './components/Homepage'
 import { Routes, Route } from 'react-router-dom'
 import Game from './components/Game'
+import { Box } from '@mui/material'
 
 const App = () => {
 
   return (
-    <Routes>
-      <Route path="/" element={<Homepage />} />
-      <Route path="/play" element={<Game />} />
-    </Routes>
+    <Box sx={{display: "flex", justifyContent: "center"}}>
+      <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/play" element={<Game />} />
+      </Routes>
+    </Box>
   )
 }
 

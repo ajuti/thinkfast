@@ -1,9 +1,9 @@
 import Shop from "./Shop"
 import Board from "./Board"
-import { Container } from "@mui/material"
+import { Box } from "@mui/material"
 import { useDispatch } from 'react-redux'
 import pool from "../../pool.json"
-import { incId, initalizeShop, maxId  } from '../reducers/unitReducer'
+import { incId, initalizeGame, maxId  } from '../reducers/unitReducer'
 
 const Game = (props) => {
   const dispatch = useDispatch()
@@ -17,11 +17,12 @@ const Game = (props) => {
       arr.push(obj)
       incId()
     }
-    dispatch(initalizeShop(arr))
+    dispatch(initalizeGame(arr))
   }
   return (
-    <Container sx={{
-      height: "900px",
+    <Box sx={{
+      height: "90vh",
+      width: "75vw",
       backgroundColor: "#99c1f1",
       display: "flex",
       justifyContent: "center",
@@ -29,7 +30,7 @@ const Game = (props) => {
     }}>
       <Board />
       <Shop />
-    </Container>
+    </Box>
   )
 }
 

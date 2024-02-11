@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setShop } from "./shopReducer";
+import { buySlot } from "../reducers/shopReducer"
 
 /**
  * units are objects in the form of {
  *  name: emoteName,
- *  id: id,
- *  pos: Position (shop | pool | board | combined)
+ *  id: id, *  pos: Position (shop | pool | board | combined)
  *  cost: unitCost,
  *  star: starLevel 
  * }
@@ -29,7 +30,7 @@ const unitSlice = createSlice({
         .map(unit => !action.payload.in.includes(unit.id) ? unit : { ...unit, pos: "SHOP" })
         .map(unit => !action.payload.out.includes(unit.id) ? unit : { ...unit, pos: "POOL"})
     },
-    initShopRdcr(state, action) { /** Also used to create units when 2 or 3 stars are sold */
+    initGameRdcr(state, action) { /** Also used to create units when 2 or 3 stars are sold */
       return state.concat([...action.payload])
     },
   }
@@ -48,6 +49,7 @@ export const buyUnit = (unit, allUnits, bench) => {
       console.log("Bench is full")
       return
     }
+    dispatch(buySlot(unit))
     const newUnit = { ...unit }
     if (sameUnits.length === 2) {
       const twoStars = allUnits.filter(u => u.name === unit.name && u.star === 2 && (u.pos === "BOARD" || u.pos === "BENCH"))
@@ -75,15 +77,16 @@ export const sellUnit = (unit) => {
 
 export const refreshShop = (shop) => {
   return async(dispatch) => {
-    // console.log("refreshed shop")
+    // console.log("refreshed shop", shop)
+    dispatch(setShop(shop.state))
     dispatch(refreshShopRdcr(shop))
   }
 }
 
-export const initalizeShop = (array) => {
+export const initalizeGame = (array) => {
   return async(dispatch) => {
-    console.log("shop initialized")
-    dispatch(initShopRdcr(array))
+    // console.log("game initialized")
+    dispatch(initGameRdcr(array))
   }
 }
 
@@ -99,9 +102,9 @@ export const createUnit = (name, star, cost) => {
       incId()
       arr.push({ name, id: maxId, pos: "POOL", star: 1 })
     }
-    dispatch(initShopRdcr(arr))
+    dispatch(initGameRdcr(arr))
   }
 }
 
 export default unitSlice.reducer
-export const { buyUnitRdcr, sellUnitRdcr, refreshShopRdcr, initShopRdcr } = unitSlice.actions
+export const { buyUnitRdcr, sellUnitRdcr, refreshShopRdcr, initGameRdcr } = unitSlice.actions
