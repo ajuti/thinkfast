@@ -19,6 +19,10 @@ const Unit = ({ id }) => {
   }
 
   if (["BOARD", "BENCH"].includes(pos)) {
+    style = { ...style, width: '10%', height: "auto" }
+  }
+
+  if (["POOL"].includes(pos)) {
     style = { ...style, width: '64px', height: '64px' }
   }
 
@@ -31,23 +35,26 @@ const Unit = ({ id }) => {
 
       case "BOARD": 
       case "BENCH":
-        dispatch(sellUnit({ name, id, pos, star }))
-        dispatch(createUnit(name, star))
+        //dispatch(sellUnit({ name, id, pos, star }))
+        //dispatch(createUnit(name, star))
+        //console.log("moving")
         break
     }
   }
 
   return (
     <Box sx={style}>
-      <img src={`${baseUrl}/${name}.webp`} 
-        alt={name} 
-        onClick={handleClick} 
-        style={{ width: "100%", height: "100%"}}   
-      /> 
-      {star === 2 && <img src={`${baseUrl}/silver.webp`}
-       style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
-      {star === 3 && <img src={`${baseUrl}/gold.webp`}
-       style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
+      <div className="unit">
+        <img src={`${baseUrl}/${name}.webp`} 
+          alt={name} 
+          onClick={handleClick} 
+          style={{ width: "100%", height: "100%"}}   
+        /> 
+        {star === 2 && <img src={`${baseUrl}/silver.webp`}
+        style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
+        {star === 3 && <img src={`${baseUrl}/gold.webp`}
+        style={{ position: "absolute", top: "-9%", left: "0", width: "40%", height: "40%" }} />}
+      </div>
     </Box>
   )
 }

@@ -61,7 +61,7 @@ export const buyUnit = (unit, allUnits, bench) => {
         newUnit.star = 3
         newUnit.remove = newUnit.remove.concat(...[twoStars.map(x => x.id)])
       }
-      console.log(newUnit.remove)
+      // console.log(newUnit.remove)
     }
     dispatch(buyUnitRdcr({ ...newUnit })) 
     // console.log("bought: ", newUnit)
@@ -70,7 +70,7 @@ export const buyUnit = (unit, allUnits, bench) => {
 
 export const sellUnit = (unit) => {
   return async(dispatch) => {
-    console.log("sold: ", unit)
+    // console.log("sold: ", unit)
     dispatch(sellUnitRdcr(unit.id)) 
   }
 }
@@ -92,7 +92,7 @@ export const initalizeGame = (array) => {
 
 export const createUnit = (name, star, cost) => {
   return async(dispatch) => {
-    console.log("created units")
+    // console.log("created units")
     let amt = 1 
     if (star === 2) { amt = 3}
     if (star === 3) { amt = 9}

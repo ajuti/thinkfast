@@ -29,7 +29,6 @@ const Shop = () => {
   }, [])
 
   // console.log(shop, pool)
-
   return (
     <>
       <Button variant="contained" sx={{ width: "8%", height: "10%", position: "absolute", bottom: "5%", left: "5%"}} onClick={handleRefresh}>Refresh</Button>
