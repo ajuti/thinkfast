@@ -19,11 +19,11 @@ const Unit = ({ id }) => {
   }
 
   if (["BOARD", "BENCH"].includes(pos)) {
-    style = { ...style, width: '10%', height: "auto" }
+    style = { ...style, width: '100%', height: "100%" }
   }
 
   if (["POOL"].includes(pos)) {
-    style = { ...style, width: '64px', height: '64px' }
+    style = { ...style, width: '100%', height: '100%' }
   }
 
   const handleClick = () => {

@@ -11,6 +11,7 @@ const ShopSlot = ({ slot }) => {
       boxSizing: "border-box"
     }}>
       {slot && <Unit key={slot.id} id={slot.id} />} 
+      {!slot && <div>sold</div>}
     </Box>
   )
 }
