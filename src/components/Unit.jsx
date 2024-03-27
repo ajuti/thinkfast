@@ -7,7 +7,13 @@ const Unit = ({ id }) => {
   const dispatch = useDispatch()
   const units = useSelector(state => state.units)
   const bench = units.filter(unit => unit.pos === "BENCH")
-  const { name, pos, star } = units.find(unit => unit.id === id)
+  // console.log(units)
+  const thisUnit = units.find(unit => unit.id === id)
+  if (!thisUnit) {
+    return null;
+  }
+
+  const { name, pos, star } = thisUnit
 
   let style = { 
     width: '100%', 

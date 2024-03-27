@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setShop } from "./shopReducer";
 import { buySlot } from "../reducers/shopReducer"
+import { buyToBenchSlot, removeId } from "./boardReducer";
 
 /**
  * units are objects in the form of {
@@ -36,7 +37,7 @@ const unitSlice = createSlice({
   }
 })
 
-export let maxId = 0
+export let maxId = 1
 
 export const incId = () => {
   maxId++
@@ -63,15 +64,19 @@ export const buyUnit = (unit, allUnits, bench) => {
       }
       // console.log(newUnit.remove)
     }
+    if (newUnit.remove) {
+      dispatch(removeId(newUnit.remove))
+    }
+    dispatch(buyToBenchSlot(newUnit.id))
     dispatch(buyUnitRdcr({ ...newUnit })) 
     // console.log("bought: ", newUnit)
   }
 }
 
-export const sellUnit = (unit) => {
+export const sellUnit = (unitId) => {
   return async(dispatch) => {
     // console.log("sold: ", unit)
-    dispatch(sellUnitRdcr(unit.id)) 
+    dispatch(sellUnitRdcr(unitId)) 
   }
 }
 

@@ -24,13 +24,16 @@ const boardSlice = createSlice({
     sellToPoolRdcr(state, action) {
       const position = state.find(slot => slot.unit === action.payload).pos
       return state.map(slot => slot.pos !== position ? slot : { ...slot, unit: null })
+    },
+    removeIdRdcr(state, action) {
+      return state.map(slot => !action.payload.includes(slot.unit) ? slot : { ...slot, unit: null })
     }
   }
 })
 
 export const buyToBenchSlot = (unitId) => {
   return async(dispatch) => {
-    dispatch(buyToBenchSlot(unitId))
+    dispatch(buyToSlotRdcr(unitId))
   }
 }
 
@@ -44,9 +47,16 @@ export const swapSlots = (unit, start, dest) => {
 
 export const sellToPool = (unitId) => {
   return async(dispatch) => {
-    dispatch(sellToPool(unitId))
+    dispatch(sellToPoolRdcr(unitId))
+  }
+}
+
+// used to remove old units when combining, note: unitsIds is plural, as it is always an array
+export const removeId = (unitIds) => {
+  return async(dispatch) => {
+    dispatch(removeIdRdcr(unitIds))
   }
 }
 
 export default boardSlice.reducer
-export const { swapSlotsRdcr, buyToSlotRdcr, sellToPoolRdcr } = boardSlice.actions
+export const { swapSlotsRdcr, buyToSlotRdcr, sellToPoolRdcr, removeIdRdcr } = boardSlice.actions

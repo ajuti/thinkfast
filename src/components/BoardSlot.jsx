@@ -2,6 +2,9 @@ import { Box } from "@mui/material"
 import Unit from "./Unit"
 
 const BoardSlot = ({ slot }) => {
+  if (slot.unit === 1) {
+    console.log("joo")
+  }
   return (
     <Box className={`boardslot ${slot.pos}`} sx={{ 
       border: "solid black",

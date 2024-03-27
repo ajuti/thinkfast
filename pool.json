@@ -7,13 +7,13 @@
     { "name": "clueless", "pos": "POOL", "star": 1, "amount": 7}
   ],
   "board": [
-    { "unit": 3, "pos": "E0" },
-    { "unit": 5, "pos": "E1" },
+    { "unit": null, "pos": "E0" },
+    { "unit": null, "pos": "E1" },
     { "unit": null, "pos": "E2" },
-    { "unit": 62, "pos": "E3" },
+    { "unit": null, "pos": "E3" },
     { "unit": null, "pos": "E4" },
-    { "unit": 20, "pos": "E5" },
-    { "unit": 44, "pos": "E6" },
+    { "unit": null, "pos": "E5" },
+    { "unit": null, "pos": "E6" },
     { "unit": null, "pos": "E7" },
     { "unit": null, "pos": "E8" },
     { "unit": null, "pos": "A0"},

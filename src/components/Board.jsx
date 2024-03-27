@@ -3,19 +3,16 @@ import { useDispatch, useSelector } from "react-redux"
 import interact from "interactjs"
 import BoardSlot from "./BoardSlot"
 import { useState } from "react"
-import { swapSlots, buyToBenchSlot, sellToPool } from "../reducers/boardReducer"
+import { swapSlots } from "../reducers/boardReducer"
 
 const Board = (props) => {
   const bench = useSelector(state => state.board).filter(unit => unit.pos.startsWith("E"))
   const board = useSelector(state => state.board).filter(unit => !unit.pos.startsWith("E"))
   const dispatch = useDispatch()
-  const [testState, setTest] = useState(true)
   console.log("render", bench)
   
   let stateFlag = true
   let origin;
-
-  let counter = 1
 
   const unit = interact(".unit")
   unit
