@@ -44,7 +44,7 @@ const Unit = ({ id }) => {
 
   return (
     <Box sx={style}>
-      <div className="unit">
+      <div className={`unit ${id}`}>
         <img src={`${baseUrl}/${name}.webp`} 
           alt={name} 
           onClick={handleClick} 

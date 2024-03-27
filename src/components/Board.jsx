@@ -1,13 +1,21 @@
 import { Paper, Grid, Box } from "@mui/material"
-import { useSelector } from "react-redux"
-import Bench from "./Bench"
+import { useDispatch, useSelector } from "react-redux"
 import interact from "interactjs"
 import BoardSlot from "./BoardSlot"
+import { useState } from "react"
+import { swapSlots, buyToBenchSlot, sellToPool } from "../reducers/boardReducer"
 
 const Board = (props) => {
-  const units = useSelector(state => state.board)
-
+  const bench = useSelector(state => state.board).filter(unit => unit.pos.startsWith("E"))
+  const board = useSelector(state => state.board).filter(unit => !unit.pos.startsWith("E"))
+  const dispatch = useDispatch()
+  const [testState, setTest] = useState(true)
+  console.log("render", bench)
+  
+  let stateFlag = true
   let origin;
+
+  let counter = 1
 
   const unit = interact(".unit")
   unit
@@ -22,8 +30,11 @@ const Board = (props) => {
       autoScroll: true,
       listeners: {
         start (event) {
-          origin = { x: event.target.getAttribute("data-x") || 0, y: event.target.getAttribute("data-y") || 0 }
-          console.log(origin)
+          origin = { 
+            x: event.target.getAttribute("data-x") || 0,
+            y: event.target.getAttribute("data-y") || 0,
+            slot: event.target.parentElement.parentElement.classList.item(1),
+          }
         },
         move (event) {
           event.preventDefault()
@@ -39,10 +50,11 @@ const Board = (props) => {
         end (event) {
           var draggable = event.target
           if (!draggable.classList.contains("can-drop")) {
-            draggable.style.transform = "translate(0, 0)"
+            draggable.style.transform = `translate(${origin.x}px, ${origin.y}px)`
             draggable.setAttribute("data-x", origin.x)
             draggable.setAttribute("data-y", origin.y)
           }
+          // console.log("yey")
         }
       }
     })
@@ -57,15 +69,13 @@ const Board = (props) => {
       overlap: 0.65,
 
       ondropactivate: function (event) {
-        origin = { x: event.target.getAttribute("data-x"), y: event.target.getAttribute("data-y") }
+        // console.log("dropping", event.relatedTarget)
       },
       ondragenter: function (event) {
         var draggable = event.relatedTarget
         var dropzone = event.target
         dropzone.classList.add("drop-active")
         draggable.classList.add("can-drop")
-        // console.log(dropzone.getBoundingClientRect().x, dropzone.getBoundingClientRect().y)
-        // console.log(draggable.getBoundingClientRect().x, draggable.getBoundingClientRect().y)
         slot = { x: dropzone.getBoundingClientRect().x, y: dropzone.getBoundingClientRect().y }
       },
       ondragleave: function (event) {
@@ -76,18 +86,35 @@ const Board = (props) => {
         slot = null
       },
       ondrop: function (event) {
+        if (!stateFlag) {
+          // console.log("stateFlag", testState)
+          return;
+        }
+        console.log("executing ondrop...")
+        stateFlag = false
         var draggable = event.relatedTarget
         var dropzone = event.target
-        if (draggable.classList.contains("can-drop")) {
-          var originX = parseFloat(draggable.getAttribute("data-x"))
-          var originY = parseFloat(draggable.getAttribute("data-y"))
-          var dx = slot.x - draggable.getBoundingClientRect().x // how much to correct x-wise
-          var dy = slot.y - draggable.getBoundingClientRect().y // how much to correct y-wise
-          draggable.style.transform = `translate(${dx + originX}px, ${dy + originY}px)`
-          
-          draggable.setAttribute("data-x", parseFloat(draggable.getAttribute("data-x")) + dx)
-          draggable.setAttribute("data-y", parseFloat(draggable.getAttribute("data-y")) + dy)
-        } 
+
+        var originX = parseFloat(draggable.getAttribute("data-x"))
+        var originY = parseFloat(draggable.getAttribute("data-y"))
+        var dx = slot.x - draggable.getBoundingClientRect().x + 3
+        var dy = slot.y - draggable.getBoundingClientRect().y + 3 
+        draggable.style.transform = `translate(${dx + originX}px, ${dy + originY}px)`
+        
+        draggable.setAttribute("data-x", parseFloat(draggable.getAttribute("data-x")) + dx)
+        draggable.setAttribute("data-y", parseFloat(draggable.getAttribute("data-y")) + dy)
+
+        const unitId = draggable.classList.item(1)
+        const start = origin.slot
+        const dest = dropzone.classList.item(1)
+
+        /* setTimeout(() => {
+          console.log("dropped", draggable)
+        }, counter * 1000) */
+        console.log("dropped")
+        
+        dispatch(swapSlots(unitId, start, dest))
+        // setTest(!testState)
         dropzone.classList.remove("drop-active")
       },
     })
@@ -101,12 +128,19 @@ const Board = (props) => {
       margin: "10px",
     }}>
       <div id="gameboard">
-        <Box sx={{ flexGrow: 1, width: "100%", height: "75%", position: "relative" }}>
+        <Box sx={{ flexGrow: 1, width: "100%", height: "100%", position: "relative" }}>
           <Grid container spacing={1} sx={{ width: "100%", height: "100%", margin: 0, position: "absolute", display: "flex", justifyContent: "center" }}>
-            {[...Array(28).keys()].map((val, idx) => {
+            {board.map((unit) => {
               return (
-                <Grid key={idx} className="gridslot" item md={1.5} sx={(idx === 7 || idx === 21) ? { marginLeft: 10, maxHeight: "25%" } : { maxHeight: "25%" }}>
-                  <BoardSlot slot={idx % 5 === 0 ? units[0] : null}/>
+                <Grid key={unit.pos} className="gridslot" item md={1.5} sx={(unit.pos === "B0" || unit.pos === "D0") ? { marginLeft: 10, height: "18%" } : { height: "18%" }}>
+                  <BoardSlot slot={unit} />
+                </Grid>
+              )
+            })}
+            {bench.map((unit) => {
+              return (
+                <Grid key={unit.pos} className="gridslot benchslot" item md={1.25} sx={{ height: "15%", marginTop: 4, marginBottom: 2 }}>
+                  <BoardSlot slot={unit} />
                 </Grid>
               )
             })}

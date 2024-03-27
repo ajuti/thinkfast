@@ -1,28 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import pool from "../../pool.json"
 
 // initialState: array with 9 "empty" ids
 
 const boardSlice = createSlice({
   name: "board",
-  initialState: [
-    { unit: 3, pos: "E1" },
-    { unit: 5, pos: "E2" },
-    { unit: null, pos: "E3" },
-    { unit: 62, pos: "E4" },
-    { unit: null, pos: "E5" },
-    { unit: 20, pos: "E6" },
-    { unit: 44, pos: "E7" },
-    { unit: null, pos: "E8" },
-    { unit: null, pos: "E9" },
-  ],
+  initialState: pool.board,
   reducers: {
     swapSlotsRdcr(state, action) {
-      const { unitId, start, dest } = action.payload
-      const unitToSwapId = state.find(slot => slot.pos === dest).unit
+      const { unit, start, dest, swap } = action.payload
+      const unitId = parseInt(unit)
+      const swapId = parseInt(swap)
       return (
         state
-          .map(slot => slot.pos !== dest ? slot : { ...slot, unit: unitId })
-          .map(slot => slot.pos !== start ? slot : { ...slot, unit: unitToSwapId })
+          .map(slot => slot.pos !== dest ? slot : { ...slot, unit: unitId ? unitId : null })
+          .map(slot => slot.pos !== start ? slot : { ...slot, unit: swapId ? swapId : null })
       )
     },
     buyToSlotRdcr(state, action) {
@@ -43,8 +35,10 @@ export const buyToBenchSlot = (unitId) => {
 }
 
 export const swapSlots = (unit, start, dest) => {
-  return async(dispatch) => {
-    dispatch(swapSlotsRdcr(unit, start, dest))
+  return async(dispatch, getState) => {
+    const swap = await getState().board.find(unit => unit.pos === dest).unit
+    // console.log("from swapSlots", swap)
+    dispatch(swapSlotsRdcr({ unit, start, dest, swap }))
   }
 }
 
