@@ -27,11 +27,13 @@ const Board = (props) => {
       autoScroll: true,
       listeners: {
         start (event) {
+          console.log("setting origin:")
           origin = { 
             x: event.target.getAttribute("data-x") || 0,
             y: event.target.getAttribute("data-y") || 0,
             slot: event.target.parentElement.parentElement.classList.item(1),
           }
+          console.log("origin set as:", origin)
         },
         move (event) {
           event.preventDefault()
@@ -83,8 +85,8 @@ const Board = (props) => {
         slot = null
       },
       ondrop: function (event) {
-        if (!stateFlag) {
-          // console.log("stateFlag", testState)
+        if (!stateFlag || !origin) {
+          // console.log("stateFlag")
           return;
         }
         console.log("executing ondrop...")
@@ -102,6 +104,7 @@ const Board = (props) => {
         draggable.setAttribute("data-y", parseFloat(draggable.getAttribute("data-y")) + dy)
 
         const unitId = draggable.classList.item(1)
+        console.log(origin)
         const start = origin.slot
         const dest = dropzone.classList.item(1)
 
